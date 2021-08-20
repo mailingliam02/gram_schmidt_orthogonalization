@@ -12,7 +12,8 @@ class vector:
         self.dim = len(self.vals)
         
     def norm(self):
-        squared = [x*x for x in range(self.dim)]
+        #L2 Vector Norm
+        squared = [x*x for x in self.vals]
         self.dot_self = sum(squared)
         mag = self.dot_self**0.5
         self.norm_vals = [x/mag for x in self.vals]
@@ -33,31 +34,34 @@ class tensors:
         inn_prod_self = self.vec_1.dot_self
         coeff = self.__inner_prod(self.vec_1.vals, self.vec_2.vals)/inn_prod_self
         return [x*coeff for x in self.vec_1.vals]
+
+class main:
+    def __init__(self, *vectors):
+        self.vectors = vectors
+        self.final_vec = [vectors[0]]+[0]*(len(vectors)-1)
+        self.projection_list = []
     
-def main(*vectors):
-    final_vec = [vectors[0]]+[0]*(len(vectors)-1)
-    projection_list = []
-    # print(final_vec)
-    for i in range(len(final_vec)):
-        projection_list.append([])
-        for j in range(i,len(vectors)):
-            # print(final_vec[i])
-            # print(vectors[j])
-            projection_list[i].append(tensors(final_vec[i], vectors[j]).project())
-        print(vectors[i])
-        print(projection_list[0][i+1] )
-        _ = vectors[i] - projection_list[0][i+1] 
-        for k in range(1,i):
-            _ = list(map(operator.sub), _,projection_list[k][i+1])
-        final_vec[i+1] = _.copy()
-    return final_vec
+    def orthogonalize(self):
+        for i in range(len(self.final_vec)-1):
+            self.projection_list.append([])
+            for j in range(i,len(self.vectors)-1):
+                # print(i)
+                # print(j)
+                # print(self.final_vec[i])
+                self.projection_list[i].append(tensors(self.final_vec[i], self.vectors[j+1]).project())
+            _ = list(map(operator.sub,self.vectors[i+1],self.projection_list[0][i]))
+            for k in range(1,i+1):
+                _ = list(map(operator.sub, _,self.projection_list[k][i-k]))
+            self.final_vec[i+1] = _.copy()
+        for i in range(len(self.final_vec)):
+            _ = vector(self.final_vec[i])
+            _.norm()
+            self.final_vec[i] = _.norm_vals
+        return self.final_vec  
+      
         
         
-        
-        
-        
-    
-main([1,2,3,5],[4,5,6,5],[7,8,9,5])
+
 
 
         
