@@ -1,9 +1,4 @@
 # -*- coding: utf-8 -*-
-"""
-Created on Thu Aug 12 00:22:41 2021
-
-@author: Percy
-"""
 import operator
 
 class vector:
