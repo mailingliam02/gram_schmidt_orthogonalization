@@ -1,9 +1,4 @@
 # -*- coding: utf-8 -*-
-"""
-Created on Wed Aug 18 17:47:09 2021
-
-@author: Percy
-"""
 import unittest 
 from src.graham_schmidtt_basic import vector, tensors, main
 class TestDataset(unittest.TestCase):        
